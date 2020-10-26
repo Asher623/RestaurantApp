@@ -1,0 +1,52 @@
+<div class="hero_section" id = "hero_section_meals">
+    <p>Our meal packages</p>
+  <img src="images/meals_pizza.jpg" >
+</div>
+<div class="medim_header" id = "medim_header_meals">
+  <ul>
+    <li><p>Pick a package, choose your meals, achive your goals! - it's that easy!</p></li>
+  </ul>
+</div>
+<div class="top_meal_packages" id = "table_meals">
+  <table>
+    {{#each data}}
+    <tr>
+      <td> <img src="{{image}}" style="width: 280px; height: 210px;" alt=""> </td>
+      <td><b><i>{{title}}</i></b> CA${{price}}</td>
+
+      <td> <p>{{synopsis}}</p> </td>
+    </tr>
+    {{/each}}
+  </table>
+</div>
+<div class="footer_image" id = "footer_image_meals">
+  <h1>No one will be hungry!</h1>
+  <h3>Free delivery, skip or cancel anytime.</h3>
+  <img src="images/meals_footer.jpg" >
+</div>
+<div class="footer">
+  <ul id="footer">
+    <!--
+    icons https://www.stickpng.com
+    -->
+    <li>
+      <a
+        href="https://www.facebook.com/pages/category/Entertainment-Website/Cute-Cats-162212024341406/"
+      >
+        <img src="images/facebook.png" width="40px" height="40px" alt="" />
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://twitter.com/elonmusk?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"
+        ><img src="images/twitter.png" style="margin-top: 3px;" width="35px" height="35px" alt=""
+      /></a>
+    </li>
+    <li>
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        ><img src="images/youtube.png" style="margin-top: 3px;" width="35px" height="35px" alt=""
+      /></a>
+    </li>
+    <li> <p>Papa John's</p> </li>
+  </ul>
+</div>

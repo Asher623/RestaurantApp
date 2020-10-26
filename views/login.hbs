@@ -1,0 +1,33 @@
+<div class="modal" id = "logInModal">
+  <div class="content">
+    <form class="" action="login" method="post">
+
+      <p id = "CustomLog">Customer Login</p>
+      <div class="errors">
+        {{# if success}}
+          <h1>SUCCESS</h1>
+        {{else}}
+          {{# if errors}}
+            <ul>
+              {{# each errors}}
+                <li>{{this.msg}}</li>
+              {{/each}}
+            </ul>
+
+          {{/if}}
+        {{/if}}
+      </div>
+
+      <label for="email">Email</label>
+
+      <input type="email" name="email" id = "email" value="{{data.email}}">
+
+      <label for="password">Password</label>
+
+      <input type="password" name="password" value="">
+
+      <input type="submit" name="button" value="SIGN IN">
+    </form>
+  </div>
+
+</div>

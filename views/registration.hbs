@@ -1,0 +1,41 @@
+
+<div class="modal" id = "registModal">
+  <div class="content">
+    <form class="" id = "regForm" action="register" method="POST">
+      <p id = "CustomLog">Create Account</p>
+      <div class="errors">
+        {{# if success}}
+          <h1>SUCCESS</h1>
+        {{else}}
+          {{# if errors}}
+            <ul>
+              {{# each errors}}
+                <li>{{this.msg}}</li>
+              {{/each}}
+            </ul>
+
+          {{/if}}
+        {{/if}}
+      </div>
+
+      <label for="firstname">First Name</label>
+
+      <input type="text" name="firstname" value="{{data.firstname}}">
+
+      <label for="lastname">Last Name</label>
+
+      <input type="text" name="lastname" value="{{data.lastname}}">
+
+      <label for="email">Email</label>
+
+      <input type="email" name="email" id = "email" value="{{data.email}}">
+
+      <label for="password">Password</label>
+
+      <input type="password" name="password" value="">
+
+      <input type="submit" name="button" value="SIGN UP">
+
+    </form>
+  </div>
+</div>
