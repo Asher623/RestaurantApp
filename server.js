@@ -102,13 +102,6 @@ var transporter = nodemailer.createTransport({
 });
 
 
-
-
-
-app.get('/welcome', function(req,res){
-  res.send("LOOOL")
-})
-
 app.get("/meals", function(req,res){
     res.send('meals');
 });
