@@ -220,6 +220,9 @@ function ensureLogin(req, res, next) {
   }
 }
 
+app.get("/meals", function(req,res){
+    res.send('meals');
+});
 
 app.get("/registration", function(req,res){
   res.render('registration');
