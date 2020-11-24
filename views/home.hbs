@@ -1,0 +1,42 @@
+<div class="hero_section">
+  <img src="images/background.jpg" >
+</div>
+<div class="medim_header">
+  <ul>
+    <li><p>Shop fruits, vegetables, juices, coffee & more from home.</p></li>
+    <li><a href="/packages" id = "view_a">VIEW PACKAGES</a></li>
+    <li><a href="#" id = "build_a">BUILD YOUR ORDER</a></li>
+  </ul>
+</div>
+<div class="content_section" >
+  <h1>No cooking, just eating.</h1>
+  <ul>
+    <li><img src="https://cdn.shopify.com/s/files/1/1758/4293/files/Pick_1.gif?14089" width="150" height="155"> <h4>Pick</h4> <p>100+ dishes.</p></li>
+    <li><img src="https://cdn.shopify.com/s/files/1/1758/4293/files/heat.gif?14089" width="150" height="155"> <h4>Cook</h4> <p>Cooked by best chefs.</p></li>
+    <li><img src="https://cdn.shopify.com/s/files/1/1758/4293/files/eat_1_1.gif?14089" width="150" height="155"> <h4>Eat</h4> <p>Delivered super fast.</p></li>
+    <li><img src="https://cdn.shopify.com/s/files/1/1758/4293/files/repeat---Copy.gif?14095" width="150" height="155"> <h4>Repeat</h4> <p>Eat best pizza.</p></li>
+  </ul>
+</div>
+<div class="med_picture">
+  <img src="images/background2.jpg" >
+</div>
+<div class="top_meal_packages" id = "table_meals">
+  <h1>Our chefs are making these right now!</h1>
+  <table>
+    {{#each data}}
+    {{#if top}}
+    <tr>
+      <td> <img src="{{image}}" style="width: 280px; height: 210px;" alt=""> </td>
+      <td><b><i> <a href="/packages/{{_id}}">{{title}}</a> </i></b> CA${{price}}</td>
+      <td> <p id = "mealDesc">{{synopsis}}</p> </td>
+    </tr>
+    {{/if}}
+    {{/each}}
+  </table>
+</div>
+<div class="footer_image">
+  <h1>Ready to Eat?</h1>
+  <h3>Free delivery, skip or cancel anytime.</h3>
+  <img src="images/footer_meal.jpg" >
+</div>
+<hr>

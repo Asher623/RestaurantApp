@@ -1,8 +1,10 @@
+<div class="divs">
+
 <div class="modal" id = "logInModal">
   <div class="content">
     <form class="" action="login" method="post">
+      <h1 id = "CustomLog" >Sign In</h1>
 
-      <p id = "CustomLog">Customer Login</p>
       <div class="errors">
         {{# if success}}
           <h1>SUCCESS</h1>
@@ -27,8 +29,21 @@
 
       <input type="password" name="password" value="">
 
-      <input type="submit" name="button" value="SIGN IN">
+      <input id="build_a" class = "logButton" type="submit" name="button" value="SIGN IN">
     </form>
   </div>
+</div>
 
+<div class="logOnBenefits" id = "logBenefits">
+  <h1>Don't have an account?</h1>
+  <p>Here are some of the benefits you’ll enjoy:</p>
+  <h4>Fast checkout.</h4>
+  <p>Your payment info is saved and ready.</p>
+  <h4>Easy tracking.</h4>
+  <p>Keep an eye on your order.</p>
+  <h4>Quick recap.</h4>
+  <p>Your order history is a click away.</p>
+  <a href="/registration" id = "logInCreateAnAccount">Create an account</a>
+
+</div>
 </div>

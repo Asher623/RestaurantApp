@@ -1,0 +1,14 @@
+
+<div class="mealPageContent">
+  <div class="mealPageDesc">
+    <h2>{{title}}</h2>
+    <h4>{{price}}</h4>
+    <p id = "mealDesc">{{synopsis}}</p>
+    {{# if user.clerk}}
+      <a href="/updateMeal/{{id}}" id = "login">Edit</a>
+    {{/if}}
+  </div>
+  <img src="/{{image}}" class = "mealPageImage" style="width: 700px; height: 620px;" alt="">
+
+
+</div>

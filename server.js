@@ -1,9 +1,9 @@
 /*********************************************************************************
-* WEB322 – Assignment 02
+* WEB322 – Assignment 03 - 04
 * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students. *
-* Name: Ivan Anferov Student ID: 130909195 Date: ____10/26/2020______________ *
+* Name: Ivan Anferov Student ID: 130909195 Date: ____11/24/2020______________ *
 * Online (Heroku, https://...) Link: __https://shrouded-atoll-45618.herokuapp.com_________ *
 * GitHub or Bitbucket repo Link: ___https://github.com/Asher623/assignment_2________________________
 * ********************************************************************************/
@@ -15,8 +15,8 @@ const exphbs = require('express-handlebars');
 const dataService = require('./meals_packeges')
 const mealsDB = require('./findMeals')
 var nodemailer = require('nodemailer');
-const regDb =require('./registerDb')
-const logDb = require('./loginDb')
+const regDb =require('./registerDb');
+
 const clientSessions = require("client-sessions");
 
 
@@ -43,8 +43,26 @@ app.use(clientSessions({
   activeDuration: 1000 * 60 // the session will be extended by this many ms each request (1 minute)
 }));
 
-app.get("/", function(req,res){
-    res.sendFile(path.join(__dirname,"/views/home.html"));
+// multer requires a few options to be setup to store files with file extensions
+// by default it won't store extensions for security reasons
+const storage = multer.diskStorage({
+    destination: "./media/images/",
+    filename: function (req, file, cb) {
+      // we write the filename as the current date down to the millisecond
+      // in a large web service this would possibly cause a problem if two people
+      // uploaded an image at the exact same time. A better way would be to use GUID's for filenames.
+      // this is a simple example.
+      cb(null, Date.now() + path.extname(file.originalname));
+    }
+  });
+
+  // tell multer to use the diskStorage function for naming files instead of the default.
+  const upload = multer({ storage: storage });
+
+app.get("/", async function(req,res){
+  return res.render("home", {
+    data: await mealsDB.getMeals(),
+  })
 });
 
 
@@ -83,9 +101,6 @@ app.post("/register",[check('firstname','First mame is required').not().isEmpty(
 
   }
 
-
-
-
 });
 
 app.post("/login",[check('email', 'Email is required').not().isEmpty(), check('password', 'Password is required').not().isEmpty(), check('password', 'Lenght must be more then 6 symbols').isLength({ min: 6 })], async (req, res)=>{
@@ -112,9 +127,60 @@ app.post("/login",[check('email', 'Email is required').not().isEmpty(), check('p
   let email = req.body.email;
 });
 
-app.get("/packages", function(req,res){
+
+app.get("/packages/:id", async function(req,res){
+  var mealOne = await mealsDB.findMealId(req.params.id)
+  console.log(mealOne.title)
+  return res.render("mealPage", {title: mealOne.title, price: mealOne.price, image: mealOne.image, mealsNumber: mealOne.numOfMeals, synopsis:mealOne.synopsis, user: req.session.user,id: mealOne._id})
+})
+
+app.post("/addMeal", upload.single('mealImage'),  async (req, res)=>{
+  console.log(req.file);
+  var formData = {
+    name: req.body.mealName,
+    price: req.body.mealPrice,
+    image: "images/" + req.file.filename,
+    category: req.body.mealCategory,
+    top: req.body.mealTop,
+    number: req.body.mealNumber,
+    desc: req.body.mealDesc,
+  }
+  var isTop = false;
+  if (formData.top == "Yes"){
+    isTop = true;
+  }
+
+  const mealAdd = await mealsDB.addMeal(formData.name, formData.price, formData.image, formData.category, formData.number, isTop, formData.desc);
+  res.redirect("/welcome");
+});
+
+app.post("/updateMeal/updateMealPost/:id", upload.single('mealImage'),  async (req, res)=>{
+    var imgPath = "";
+    if (req.file){
+      imgPath = "images/" + req.file.filename;
+    }
+
+  var formData = {
+    name: req.body.mealName,
+    price: req.body.mealPrice,
+    image: imgPath,
+    category: req.body.mealCategory,
+    top: req.body.mealTop,
+    number: req.body.mealNumber,
+    desc: req.body.mealDesc,
+  }
+  var isTop = false;
+  if (formData.top == "Yes"){
+    isTop = true;
+  }
+  await mealsDB.updateMeal(req.params.id, formData.name, formData.price, formData.image, formData.category, formData.number, isTop, formData.desc);
+  res.redirect("/welcome");
+});
+
+
+app.get("/packages", async function(req,res){
   return res.render("packages", {
-    data: mealsDB.getMeals(),
+    data: await mealsDB.getMeals()
   })
 })
 
@@ -128,33 +194,32 @@ var transporter = nodemailer.createTransport({
 });
 
 
-
-
-
 app.get('/welcome', ensureLogin, function(req,res){
-  if (req.session.user.clerk){
-    return res.render("welcome", {user: req.session.user, layout: 'clerkLayout.hbs'});
-  }
-  else{
-    return res.render("welcome", {user: req.session.user , layout: 'userLayout.hbs'});
-  }
+  return res.render("welcome", {user: req.session.user})
 })
 
 app.get("/logout", function(req, res) {
   req.session.reset();
+  app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'main'}));
   res.redirect("/login");
 });
 
 function ensureLogin(req, res, next) {
   if (!req.session.user) {
+
     res.redirect("/login");
   } else {
+    if (req.session.user.clerk){
+      app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'clerkLayout'}));
+    }
+    else{
+      app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'userLayout'}));
+    }
+
     next();
   }
 }
-app.get("/meals", function(req,res){
-    res.send('meals');
-});
+
 
 app.get("/registration", function(req,res){
   res.render('registration');
@@ -164,6 +229,15 @@ app.get("/login", function(req,res){
   res.render('login');
 
 });
+
+app.get("/addMeal", function(req,res){
+  res.render('addMeal');
+})
+
+app.get("/updateMeal/:id", async function(req,res){
+  var mealOne = await mealsDB.findMealId(req.params.id)
+  return res.render("updateMeal", {id: req.params.id, title: mealOne.title, price: mealOne.price, image: mealOne.image, desc: mealOne.synopsis, top: mealOne.top, category: mealOne.category, numMeals: mealOne.numOfMeals})
+})
 
 
 app.use(express.static("media"));

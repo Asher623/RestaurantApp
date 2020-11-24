@@ -1,0 +1,62 @@
+<div>
+  <div class="content">
+    <form class="" action="updateMealPost/{{id}}" method="post" enctype="multipart/form-data">
+
+      <p id = "CustomLog">Update Meal</p>
+      <div class="errors">
+        {{# if success}}
+          <h1>SUCCESS</h1>
+        {{else}}
+        {{logErrors}}
+          {{# if errors}}
+            <ul>
+              {{# each errors}}
+                <li>{{this.msg}}</li>
+              {{/each}}
+            </ul>
+
+          {{/if}}
+        {{/if}}
+      </div>
+      <label for="mealName">Meal Package Name</label>
+      <input type="text" name="mealName" id = "mealName" value="{{title}}">
+
+
+      <label for="mealPrice">Meal Package Price</label>
+      <input type="text" name="mealPrice" id = "mealPrice" value="{{price}}">
+
+
+      <label for="mealDesc">Meal Package Description</label>
+      <textarea id="mealDesc" name="mealDesc" rows="4" cols="50">{{desc}}</textarea>
+
+
+      <label for="Meal Package Name">Meal Package Category</label>
+      <select class = "" name="mealCategory" value ={{category}}>
+        <option>Pasta</option>
+        <option>Pizza</option>
+        <option>Salad</option>
+        <option>Mixed</option>
+      </select>
+
+      <label for="Meal Package Name">Number of Meals</label>
+      <select class = "" name="mealNumber" value = {{numMeals}}>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+      </select>
+
+      <label for="Meal Package Name">Top Meal?</label>
+      <select class = "" name="mealTop" valeu = "{{top}}">
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label for="mealImage">Select an Image</label>
+      <input type="file" id="mealImage" name="mealImage" accept="image/png,image/gif,image/jpeg" value = {{image}}>
+
+      <input type="submit" id="build_a" class = "logButton" name="button" value="UPDATE">
+    </form>
+  </div>
+
+</div>
