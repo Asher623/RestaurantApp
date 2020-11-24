@@ -216,14 +216,7 @@ li a{
 #footer img{
   margin-left: 30px;
 }
-.modal{
 
-
-
-
-
-
-}
 .content{
   background-color: #fefefe;
 
@@ -231,6 +224,9 @@ li a{
   height: 500px;
   padding: 20px;
   z-index: 100;
+  margin-bottom: 500px;
+  margin-left: 100px;
+  margin-top: 50px;
 
 }
 .content form{
@@ -257,10 +253,16 @@ li a{
   margin-bottom: 15px;
 
 }
+.content label{
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 .content #CustomLog{
-  font-size: 1.6em;
+  font-size: 2.5em;
   margin-top: -10px;
   margin-bottom: 20px;
+  color: #CC6666;
 
 }
 .content label{
@@ -339,4 +341,85 @@ li a{
 .errors li{
   list-style-type: none;
   margin-left: -35px;
+}
+
+#logInModal{
+
+  display:table;
+  margin:auto;
+  margin-top: 200px;
+}
+.footer{
+
+  width: 100%;
+}
+.logOnBenefits{
+  display:table;
+  margin:auto;
+  margin-top: 200px;
+  margin-right: 200px;
+}
+.divs{
+  display: flex;
+
+}
+.logButton{
+  color: white;
+  font-size: 0.8em;
+
+}
+
+#regBenefits{
+  margin-top: 300px;
+
+}
+
+#logBenefits{
+  margin-bottom: 40%;
+}
+
+#regBenefits h4{
+  margin-bottom: -10px;
+}
+#logBenefits h4{
+  margin-bottom: -10px;
+}
+#logInCreateAnAccount{
+  color:#CC6666;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+#addMealItems{
+}
+select{
+  width: 150px;
+  font-size: 1.2em;
+  margin: 10px;
+}
+
+select:focus {
+  min-width: 150px;
+  width: auto;
+}
+.mealPageContent{
+
+  display:table;
+  margin:auto;
+  margin-top: 100px;
+
+}
+.mealPageDesc{
+  float: right;
+  margin-left: 70px;
+}
+main{
+  min-height: calc(100vh - 189px);
+}
+
+.welcomeH{
+  margin-top: 80px;
+  margin-left: 30px;
+}
+#mealDesc{
+  max-width: 500px;
 }
