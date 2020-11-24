@@ -12,7 +12,6 @@ var express = require("express");
 const multer = require("multer");
 var app = express();
 const exphbs = require('express-handlebars');
-const dataService = require('./meals_packeges')
 const mealsDB = require('./findMeals')
 var nodemailer = require('nodemailer');
 const regDb =require('./registerDb');
@@ -244,15 +243,6 @@ app.get("/updateMeal/:id", async function(req,res){
 
 app.use(express.static("media"));
 
-app.get('/script.js',function(req,res){
-    res.sendFile(path.join(__dirname + '/script.js'));
-});
-app.get('/top_meal_packeges.js',function(req,res){
-    res.sendFile(path.join(__dirname + '/top_meal_packeges.js'));
-});
-app.get('/meals_packeges.js',function(req,res){
-    res.sendFile(path.join(__dirname + '/meals_packeges.js'));
-});
 
 app.listen(HTTP_PORT, onHttpStart);
 
