@@ -193,7 +193,6 @@ var transporter = nodemailer.createTransport({
   }
 });
 
-
 app.get('/welcome', ensureLogin, function(req,res){
   return res.render("welcome", {user: req.session.user})
 })
@@ -220,6 +219,9 @@ function ensureLogin(req, res, next) {
   }
 }
 
+app.get("/meals", function(req,res){
+    res.send('meals');
+});
 
 app.get("/registration", function(req,res){
   res.render('registration');
