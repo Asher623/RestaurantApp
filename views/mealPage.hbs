@@ -1,14 +1,30 @@
 
 <div class="mealPageContent">
   <div class="mealPageDesc">
-    <h2>{{title}}</h2>
-    <h4>{{price}}</h4>
-    <p id = "mealDesc">{{synopsis}}</p>
+    <h1 style = "color: #6d0133;">{{title}}</h1>
+    <h4 style ="color: #CC6666;" step="0.1">CA${{price}}</h4>
+    <p id = "mealDesc" style = "margin-bottom: 50px;">{{synopsis}}</p>
+    {{# if user}}
     {{# if user.clerk}}
-      <a href="/updateMeal/{{id}}" id = "login">Edit</a>
+    <a id = "build_a" style = " border: 0; text-decoration: none; color: white; font-size: 1.1em;" href="/updateMeal/{{id}}">Edit meal</a>
+    {{else}}
+    <title>Number of Packages?</title>
+    <form class="" action="addToCart" method="post">
+      <input type="hidden" name="_id" value="{{id}}">
+      <input type="hidden" name="title" value="{{title}}">
+      <input type="hidden" name="img" value="{{image}}">
+      <hr>
+      <p> <b>How many meals did you want in your package?</b> </p>
+      <input style = "border-radius: 5px; border: 1px solid; height: 25px; width: 200px; font-size: 0.8em;" type="number" min = "1" value = "1" id = "mealsNumber" name="quantity" value="">
+      <input hidden="text" name="price" value="{{price}}">
+      <input id = "build_a" style = "border: 0; margin-left: 30px; color: white; font-size: 0.8em;" type="submit" value="Add to Cart">
+    </form>
+
+    {{/if}}
     {{/if}}
   </div>
   <img src="/{{image}}" class = "mealPageImage" style="width: 700px; height: 620px;" alt="">
+
 
 
 </div>

@@ -1,11 +1,11 @@
 /*********************************************************************************
-* WEB322 – Assignment 03 - 04
+* WEB322 – Assignment 03 - 05
 * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students. *
-* Name: Ivan Anferov Student ID: 130909195 Date: ____11/24/2020______________ *
+* Name: _Ivan Anferov_ Student ID: _130909195_ Date: ____12/04/2020______________ *
 * Online (Heroku, https://...) Link: __https://shrouded-atoll-45618.herokuapp.com_________ *
-* GitHub or Bitbucket repo Link: ___https://github.com/Asher623/assignment_2________________________
+* GitHub or Bitbucket repo Link: ___https://github.com/Asher623/assignment_2/tree/main________________________
 * ********************************************************************************/
 var path = require("path");
 var express = require("express");
@@ -17,9 +17,6 @@ var nodemailer = require('nodemailer');
 const regDb =require('./registerDb');
 
 const clientSessions = require("client-sessions");
-
-
-
 
 var HTTP_PORT = process.env.PORT || 8080;
 
@@ -34,28 +31,22 @@ function onHttpStart() {
   console.log("Express http server listening on: " + HTTP_PORT);
 }
 
-// Setup client-sessions
+
 app.use(clientSessions({
-  cookieName: "session", // this is the object name that will be added to 'req'
-  secret: "qwertyuiop", // this should be a long un-guessable string.
-  duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
-  activeDuration: 1000 * 60 // the session will be extended by this many ms each request (1 minute)
+  cookieName: "session",
+  secret: "qwertyuiop",
+  duration: 30 * 60 * 1000,
+  activeDuration: 30000 * 60
 }));
 
-// multer requires a few options to be setup to store files with file extensions
-// by default it won't store extensions for security reasons
+
 const storage = multer.diskStorage({
     destination: "./media/images/",
     filename: function (req, file, cb) {
-      // we write the filename as the current date down to the millisecond
-      // in a large web service this would possibly cause a problem if two people
-      // uploaded an image at the exact same time. A better way would be to use GUID's for filenames.
-      // this is a simple example.
+
       cb(null, Date.now() + path.extname(file.originalname));
     }
   });
-
-  // tell multer to use the diskStorage function for naming files instead of the default.
   const upload = multer({ storage: storage });
 
 app.get("/", async function(req,res){
@@ -85,7 +76,7 @@ app.post("/register",[check('firstname','First mame is required').not().isEmpty(
   } else {
     var mailOptions = {
       from: 'ivananer623@gmail.com',
-      to: email,
+      to: req.body.email,
       subject: 'Papa Jones',
       text: 'Welcome to Papa Jones!!!'
     };
@@ -120,8 +111,12 @@ app.post("/login",[check('email', 'Email is required').not().isEmpty(), check('p
       lastname: logInDb.lastname,
       clerk: logInDb.clerk,
     }
+
+    if(req.session.user && req.session.user.clerk == false) {
+      req.session.user.cart = { items: [], total: 0 }
+    }
     res.redirect("/welcome")
-    //return res.render("welcome",{errors: null, success: true, data: req.body.firstname})
+
   }
   let email = req.body.email;
 });
@@ -129,8 +124,7 @@ app.post("/login",[check('email', 'Email is required').not().isEmpty(), check('p
 
 app.get("/packages/:id", async function(req,res){
   var mealOne = await mealsDB.findMealId(req.params.id)
-  console.log(mealOne.title)
-  return res.render("mealPage", {title: mealOne.title, price: mealOne.price, image: mealOne.image, mealsNumber: mealOne.numOfMeals, synopsis:mealOne.synopsis, user: req.session.user,id: mealOne._id})
+  return res.render("mealPage", {title: mealOne.title, price: mealOne.price, image: mealOne.image, mealsNumber: mealOne.numOfMeals, synopsis:mealOne.synopsis, user: req.session.user, id: mealOne._id})
 })
 
 app.post("/addMeal", upload.single('mealImage'),  async (req, res)=>{
@@ -183,6 +177,46 @@ app.get("/packages", async function(req,res){
   })
 })
 
+app.post("/packages/addToCart", function(req,res){
+
+  var newItem = req.body;
+  req.session.user.cart.items.push(newItem);
+  res.redirect("/packages");
+})
+app.get("/shoppingCart", function(req,res){
+  var total = 0;
+  for(item of req.session.user.cart.items){
+    total = total + parseFloat(item.price) * parseFloat(item.quantity);
+
+  }
+
+  res.render("shoppingCart", {items: req.session.user.cart.items, total: total, user: req.session.user})
+
+
+})
+app.post("/shoppingCart", function(req,res){
+
+  var itemsTitle = "";
+  for(item of req.session.user.cart.items){
+    itemsTitle += item.title + ' ' + item.price + ', Quantity: ' + item.quantity + '\n'
+  }
+  var mailOptions = {
+    from: 'ivananer623@gmail.com',
+    to: req.body.email,
+    subject: 'Papa Jones',
+    text: 'Hi ' + req.body.firstname + ' ' + req.body.lastname + ' here is your order details:' + '\n' + 'Address: ' + req.body.country + ', ' + req.body.city + ', ' + req.body.address + '.' + '\n' + 'Meals: ' + '\n'+ itemsTitle + 'Total: ' + req.body.total + '\n' + '\n' + '\n' + 'Thank you for your oreder!'
+  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+  req.session.user.cart = { items: [], total: 0 }
+  return res.render("thankPage")
+})
+
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -194,6 +228,9 @@ var transporter = nodemailer.createTransport({
 
 app.get('/welcome', ensureLogin, function(req,res){
   return res.render("welcome", {user: req.session.user})
+})
+app.get('/thankPage', ensureLogin, function(req,res){
+  return res.render("thankPage")
 })
 
 app.get("/logout", function(req, res) {
@@ -208,7 +245,7 @@ function ensureLogin(req, res, next) {
     res.redirect("/login");
   } else {
     if (req.session.user.clerk){
-      app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'clerkLayout'}));
+      app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'clerkLayout',}));
     }
     else{
       app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'userLayout'}));
@@ -231,6 +268,8 @@ app.get("/login", function(req,res){
 
 });
 
+
+
 app.get("/addMeal", function(req,res){
   res.render('addMeal');
 })
@@ -245,5 +284,3 @@ app.use(express.static("media"));
 
 
 app.listen(HTTP_PORT, onHttpStart);
-
-//mongodb+srv://fier61:wsad234Q@cluster0.bb8bk.mongodb.net/<dbname>?retryWrites=true&w=majority

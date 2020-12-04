@@ -1,0 +1,83 @@
+{{#if items}}
+
+
+
+<div class="shopCart">
+
+
+  <div class="itemsCart">
+
+      {{#each items}}
+      <div class="itemDetails">
+      <img src="/{{img}}" class = "mealPageImage" style="width: 100px; height: 85px;" alt="">
+      <div class="itemDesc">
+        <p style = "font-size: 1.2em;">{{title}} CA${{price}}</p>
+        <p style = "margin-top: -20px;">Quantity: {{quantity}}</p>
+
+      </div>
+      </div>
+
+      {{/each}}
+
+      <hr>
+    <p style = "word-spacing: 170px; ">Total: <b style = "font-size: 1.2em;">CA${{total}}</b></p>
+  </div>
+<div class="formCart">
+
+  <form class="" action="/shoppingCart" method="post">
+    <div class="contactInfoCart">
+      <h3>Contact information</h3>
+      <img src="images/userImg.png" class = "userImg" width="50" height="50"alt="">
+      <p class = "cartFullName">  {{user.firstname}} {{user.lastname}}</p>
+      <p class = "cartEmail"> {{user.email}}</p>
+
+
+    </div>
+
+    <label>Shipping address</label>
+    <div class="">
+      <input type="text" style = "margin-top: 30px" name="firstname" placeholder="First name" required value="{{user.firstname}} ">
+
+      <input type="text" name="lastname" placeholder="Last name" required value = "{{user.lastname}}">
+    </div>
+
+    <input type="text" name="address" placeholder="Address" required>
+
+    <input type="text" name="city" placeholder="City" required>
+    <input type="hidden" name="email" value="{{user.email}}">
+    <input type="hidden" name="total" value="{{total}}">
+
+
+    <label for="Meal Package Name">Country</label>
+    <select class = "" name="country" value ="Canada">
+      <option>Canada</option>
+    </select>
+
+    <label  for="Meal Package Name">Province</label>
+    <select  class = "" name="mealNumber" value = {{numMeals}}>
+      <option> Alberta</option>
+      <option>British Columbia</option>
+      <option>Manitoba</option>
+      <option>New Brunswick</option>
+      <option>Newfoundland and Labrador</option>
+      <option>Nova Scotia</option>
+      <option>Ontario</option>
+      <option>Prince Edward Island</option>
+      <option>Quebec</option>
+      <option>Saskatchewan</option>
+      <option>4</option>
+      <option>4</option>
+    </select>
+
+    <input type="text" name="phone" placeholder="Phone" required>
+    <input id = "build_a" style = " margin-top: 50px; margin-left: 253px; width:150px; border: 0; color: white; font-size: 1.1em;" type="submit" name="" value="Place your order">
+
+  </form>
+</div>
+
+</div>
+
+{{else}}
+
+<h2 style = "margin: 20px 20px;">Cart is empty</h2>
+{{/if}}

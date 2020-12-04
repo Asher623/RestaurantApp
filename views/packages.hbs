@@ -11,10 +11,10 @@
   <table>
     {{#each data}}
     <tr>
-      <td> <img src="{{image}}" style="width: 280px; height: 210px;" alt=""> </td>
+      <td> <a href="/packages/{{_id}}"><img src="{{image}}" style="width: 280px; height: 210px;" alt=""></a> </td>
       <td><b><i> <a href="/packages/{{_id}}">{{title}}</a> </i></b> CA${{price}}</td>
 
-      <td> <p>{{synopsis}}</p> </td>
+      <td> <p class = "limitWords">{{synopsis}}</p> </td>
     </tr>
     {{/each}}
   </table>
