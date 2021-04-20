@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
-mongoose.connect("mongodb+srv://fier61:wsad234Q@cluster0.bb8bk.mongodb.net/AssignmentDb?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect("mongodb+srv://fier61:password@cluster0.bb8bk.mongodb.net/AssignmentDb?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true})
 
 var registration_model = new Schema({
   "first_name":  String,
