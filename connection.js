@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-mongoose.connect("mongodb+srv://fier61:wsad234Q@cluster0.bb8bk.mongodb.net/AssignmentDb?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect("mongodb+srv://fier61:password@cluster0.bb8bk.mongodb.net/AssignmentDb?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true})
 
 
 var meals_packeges = new Schema({
