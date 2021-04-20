@@ -1,12 +1,4 @@
-/*********************************************************************************
-* WEB322 – Assignment 03 - 04
-* I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
-* of this assignment has been copied manually or electronically from any other source
-* (including 3rd party web sites) or distributed to other students. *
-* Name: Ivan Anferov Student ID: 130909195 Date: ____11/24/2020______________ *
-* Online (Heroku, https://...) Link: __https://shrouded-atoll-45618.herokuapp.com_________ *
-* GitHub or Bitbucket repo Link: ___https://github.com/Asher623/assignment_2________________________
-* ********************************************************************************/
+
 var path = require("path");
 var express = require("express");
 const multer = require("multer");
@@ -18,8 +10,6 @@ var nodemailer = require('nodemailer');
 const regDb =require('./registerDb');
 
 const clientSessions = require("client-sessions");
-
-
 
 
 var HTTP_PORT = process.env.PORT || 8080;
@@ -37,26 +27,19 @@ function onHttpStart() {
 
 // Setup client-sessions
 app.use(clientSessions({
-  cookieName: "session", // this is the object name that will be added to 'req'
-  secret: "qwertyuiop", // this should be a long un-guessable string.
-  duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
-  activeDuration: 1000 * 60 // the session will be extended by this many ms each request (1 minute)
+  cookieName: "session",
+  secret: "qwertyuiop", 
+  duration: 2 * 60 * 1000, 
+  activeDuration: 1000 * 60 
 }));
 
-// multer requires a few options to be setup to store files with file extensions
-// by default it won't store extensions for security reasons
 const storage = multer.diskStorage({
     destination: "./media/images/",
     filename: function (req, file, cb) {
-      // we write the filename as the current date down to the millisecond
-      // in a large web service this would possibly cause a problem if two people
-      // uploaded an image at the exact same time. A better way would be to use GUID's for filenames.
-      // this is a simple example.
       cb(null, Date.now() + path.extname(file.originalname));
     }
   });
 
-  // tell multer to use the diskStorage function for naming files instead of the default.
   const upload = multer({ storage: storage });
 
 app.get("/", async function(req,res){
@@ -122,7 +105,6 @@ app.post("/login",[check('email', 'Email is required').not().isEmpty(), check('p
       clerk: logInDb.clerk,
     }
     res.redirect("/welcome")
-    //return res.render("welcome",{errors: null, success: true, data: req.body.firstname})
   }
   let email = req.body.email;
 });
@@ -188,8 +170,8 @@ app.get("/packages", async function(req,res){
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'ivananer623@gmail.com',
-    pass: '12345qweR'
+    user: '',
+    pass: ''
   }
 });
 
@@ -257,4 +239,4 @@ app.get('/meals_packeges.js',function(req,res){
 
 app.listen(HTTP_PORT, onHttpStart);
 
-//mongodb+srv://fier61:wsad234Q@cluster0.bb8bk.mongodb.net/<dbname>?retryWrites=true&w=majority
+
